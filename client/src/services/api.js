@@ -9,7 +9,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('pashumitra_token');
+  const token = localStorage.getItem('pashurakshak_token') || localStorage.getItem('pashumitra_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -30,7 +30,7 @@ api.interceptors.response.use(
       }
 
       if (url?.includes('/auth/me')) {
-        const saved = localStorage.getItem('pashumitra_user');
+        const saved = localStorage.getItem('pashurakshak_user') || localStorage.getItem('pashumitra_user');
         const user = saved ? JSON.parse(saved) : fallbackData.users['farmer@demo.com'];
         return Promise.resolve({ data: { user } });
       }

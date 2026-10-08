@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pashumitra-cache-v1';
+const CACHE_NAME = 'pashurakshak-cache-v1';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -41,7 +41,7 @@ self.addEventListener('fetch', (event) => {
   // Cache OpenStreetMap tiles for offline map viewing
   if (url.hostname.includes('tile.openstreetmap.org')) {
     event.respondWith(
-      caches.open('pashumitra-tiles-cache').then(async (cache) => {
+      caches.open('pashurakshak-tiles-cache').then(async (cache) => {
         const cachedResponse = await cache.match(event.request);
         if (cachedResponse) return cachedResponse;
         try {

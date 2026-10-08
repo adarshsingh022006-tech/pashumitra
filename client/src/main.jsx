@@ -8,10 +8,10 @@ if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js')
       .then((reg) => {
-        console.log('[PashuMitra PWA] Service Worker registered:', reg.scope);
+        console.log('[PashuRakshak PWA] Service Worker registered:', reg.scope);
       })
       .catch((err) => {
-        console.warn('[PashuMitra PWA] Service Worker registration failed:', err);
+        console.warn('[PashuRakshak PWA] Service Worker registration failed:', err);
       });
   });
 }

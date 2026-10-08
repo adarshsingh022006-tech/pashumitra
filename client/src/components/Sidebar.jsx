@@ -168,7 +168,7 @@ export default function Sidebar({ isOpen, onClose }) {
             </div>
           )}
 
-          {/* PashuMitra Loop & About Link */}
+          {/* PashuRakshak Loop & About Link */}
           <div>
             <nav className="space-y-1 pt-2 border-t border-slate-100">
               <NavLink to="/about" className={navItemClass} onClick={onClose}>

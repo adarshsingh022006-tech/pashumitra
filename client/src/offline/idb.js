@@ -1,4 +1,4 @@
-const DB_NAME = 'pashumitra_offline_db';
+const DB_NAME = 'pashurakshak_offline_db';
 const DB_VERSION = 1;
 const STORE_NAME = 'pending_reports';
 

@@ -41,7 +41,7 @@ app.use('/api/voice', voiceRoutes);
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
-    platform: 'PashuMitra Early-Warning & Disease Surveillance',
+    platform: 'PashuRakshak Early-Warning & Disease Surveillance',
     version: '1.0.0',
     timestamp: new Date().toISOString()
   });
@@ -50,7 +50,7 @@ app.get('/api/health', (req, res) => {
 async function startServer() {
   try {
     console.log('--------------------------------------------------');
-    console.log('🌿 PashuMitra Server Initializing...');
+    console.log('🌿 PashuRakshak Server Initializing...');
     console.log('--------------------------------------------------');
 
     // 1. Run DB migrations
@@ -65,7 +65,7 @@ async function startServer() {
     // 4. Start HTTP Server
     app.listen(PORT, () => {
       console.log('==================================================');
-      console.log(`🚀 PashuMitra Backend running on: http://localhost:${PORT}`);
+      console.log(`🚀 PashuRakshak Backend running on: http://localhost:${PORT}`);
       console.log(`📊 AI Risk Model: Online (Random Forest + Clinical Fallback)`);
       console.log(`📍 Spatial Hotspot Engine: Online (DBSCAN 5km Radius)`);
       console.log(`🌦️ Weather Integration: Online (OpenWeatherMap + Simulation)`);

@@ -5,19 +5,19 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('pashumitra_user');
+    const saved = localStorage.getItem('pashurakshak_user') || localStorage.getItem('pashumitra_user');
     return saved ? JSON.parse(saved) : null;
   });
-  const [token, setToken] = useState(() => localStorage.getItem('pashumitra_token') || null);
+  const [token, setToken] = useState(() => localStorage.getItem('pashurakshak_token') || localStorage.getItem('pashumitra_token') || null);
   const [loading, setLoading] = useState(true);
-  const [language, setLanguage] = useState(() => localStorage.getItem('pashumitra_lang') || 'en');
+  const [language, setLanguage] = useState(() => localStorage.getItem('pashurakshak_lang') || localStorage.getItem('pashumitra_lang') || 'en');
 
   useEffect(() => {
     if (token) {
       api.get('/auth/me')
         .then(res => {
           setUser(res.data.user);
-          localStorage.setItem('pashumitra_user', JSON.stringify(res.data.user));
+          localStorage.setItem('pashurakshak_user', JSON.stringify(res.data.user));
         })
         .catch(() => {
           // Token invalid
@@ -34,8 +34,8 @@ export const AuthProvider = ({ children }) => {
     const { user: userData, token: jwtToken } = res.data;
     setUser(userData);
     setToken(jwtToken);
-    localStorage.setItem('pashumitra_token', jwtToken);
-    localStorage.setItem('pashumitra_user', JSON.stringify(userData));
+    localStorage.setItem('pashurakshak_token', jwtToken);
+    localStorage.setItem('pashurakshak_user', JSON.stringify(userData));
     return userData;
   };
 
@@ -44,21 +44,21 @@ export const AuthProvider = ({ children }) => {
     const { user: userData, token: jwtToken } = res.data;
     setUser(userData);
     setToken(jwtToken);
-    localStorage.setItem('pashumitra_token', jwtToken);
-    localStorage.setItem('pashumitra_user', JSON.stringify(userData));
+    localStorage.setItem('pashurakshak_token', jwtToken);
+    localStorage.setItem('pashurakshak_user', JSON.stringify(userData));
     return userData;
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem('pashumitra_token');
-    localStorage.removeItem('pashumitra_user');
+    localStorage.removeItem('pashurakshak_token');
+    localStorage.removeItem('pashurakshak_user');
   };
 
   const changeLanguage = (lang) => {
     setLanguage(lang);
-    localStorage.setItem('pashumitra_lang', lang);
+    localStorage.setItem('pashurakshak_lang', lang);
   };
 
   return (

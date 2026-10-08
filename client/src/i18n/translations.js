@@ -1,6 +1,6 @@
 export const translations = {
   en: {
-    appName: 'PashuMitra',
+    appName: 'PashuRakshak',
     tagline: 'From Farmer Reports to Early-Warning Action',
     mainMenu: 'MAIN MENU',
     dashboard: 'Dashboard',
@@ -47,7 +47,7 @@ export const translations = {
     riskLow: 'Low Risk',
   },
   hi: {
-    appName: 'पशुमित्र',
+    appName: 'पशुरक्षक',
     tagline: 'किसान रिपोर्ट से त्वरित प्रारंभिक चेतावनी तक',
     mainMenu: 'मुख्य मेन्यू',
     dashboard: 'डैशबोर्ड',
@@ -94,7 +94,7 @@ export const translations = {
     riskLow: 'कम जोखिम',
   },
   pa: {
-    appName: 'ਪਸ਼ੂਮਿੱਤਰ',
+    appName: 'ਪਸ਼ੂਰੱਖਿਅਕ',
     tagline: 'ਕਿਸਾਨ ਰਿਪੋਰਟਾਂ ਤੋਂ ਸ਼ੁਰੂਆਤੀ ਚੇਤਾਵਨੀ ਕਾਰਵਾਈ ਤੱਕ',
     mainMenu: 'ਮੁੱਖ ਮੇਨੂ',
     dashboard: 'ਡੈਸ਼ਬੋਰਡ',

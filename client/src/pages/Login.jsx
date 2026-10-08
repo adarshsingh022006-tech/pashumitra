@@ -230,14 +230,14 @@ export default function Login() {
               disabled={loading}
               className="w-full py-2.5 rounded-xl bg-pashu-dark hover:bg-emerald-900 text-white font-bold shadow-xs transition-colors disabled:opacity-50 mt-2"
             >
-              {loading ? 'Authenticating...' : isRegister ? 'Complete Registration' : 'Sign In to PashuMitra'}
+              {loading ? 'Authenticating...' : isRegister ? 'Complete Registration' : 'Sign In to PashuRakshak'}
             </button>
           </form>
         </div>
 
         <div className="text-center">
           <Link to="/about" className="text-xs text-slate-500 hover:text-slate-800 underline">
-            Learn more about the PashuMitra Intelligence Loop
+            Learn more about the PashuRakshak Intelligence Loop
           </Link>
         </div>
       </div>

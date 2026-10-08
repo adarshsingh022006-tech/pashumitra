@@ -83,14 +83,14 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* PASHUMITRA INTELLIGENCE LOOP - Exact recreation */}
+      {/* PASHURAKSHAK INTELLIGENCE LOOP - Exact recreation */}
       <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-10 shadow-sm space-y-8">
         <div className="text-center space-y-2">
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
             End-To-End Surveillance Architecture
           </span>
           <h2 className="text-2xl sm:text-3xl font-black text-navy-dark">
-            The PashuMitra Intelligence Loop
+            The PashuRakshak Intelligence Loop
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 max-w-xl mx-auto">
             Transforming fragmented grassroots farm reports into verified community biosecurity actions in four coordinated phases.

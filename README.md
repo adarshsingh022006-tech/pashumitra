@@ -1,4 +1,4 @@
-# PashuMitra – From Farmer Reports to Early-Warning Action
+# PashuRakshak – From Farmer Reports to Early-Warning Action
 ### Livestock Disease Early-Detection & Surveillance Platform
 
 > *"Multiple weak signals → one actionable risk signal"*
@@ -6,11 +6,11 @@
 - **🌐 Live Production Deployment**: [https://client-wine-theta.vercel.app](https://client-wine-theta.vercel.app)
 - **📦 GitHub Repository**: [https://github.com/adarshsingh022006-tech/pashumitra](https://github.com/adarshsingh022006-tech/pashumitra)
 
-**PashuMitra** is a livestock disease early-detection and surveillance platform designed to bridge the critical gap between grassroots farmer symptom reports and rapid veterinary intervention. Built for mobile-first accessibility across rural India, it combines speech-to-text reporting in regional languages, offline-first data queues, an in-process Random Forest AI risk classifier, and spatial-temporal outbreak clustering (Haversine DBSCAN).
+**PashuRakshak** is a livestock disease early-detection and surveillance platform designed to bridge the critical gap between grassroots farmer symptom reports and rapid veterinary intervention. Built for mobile-first accessibility across rural India, it combines speech-to-text reporting in regional languages, offline-first data queues, an in-process Random Forest AI risk classifier, and spatial-temporal outbreak clustering (Haversine DBSCAN).
 
 ---
 
-## 🌟 The PashuMitra Intelligence Loop
+## 🌟 The PashuRakshak Intelligence Loop
 
 1. **CAPTURE (Grassroots Ingestion)**:
    - Voice dictation in English, Hindi (हिन्दी), and Punjabi (ਪੰਜਾਬੀ) powered by the browser Web Speech API with backend NLP keyword extraction.
