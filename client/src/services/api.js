@@ -1,124 +1,77 @@
 import axios from 'axios';
-import { fallbackData } from './fallbackData';
+import { handleMockRequest } from './mockBackend';
+
+const isLocal = typeof window !== 'undefined' && (
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1'
+);
+
+const hasBackendUrl = Boolean(import.meta.env.VITE_API_URL);
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(async (config) => {
   const token = localStorage.getItem('pashurakshak_token') || localStorage.getItem('pashumitra_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  // If in cloud standalone mode without live backend, bypass network to avoid static server 405/404 errors
+  if (!isLocal && !hasBackendUrl) {
+    config.adapter = async (cfg) => {
+      const mockRes = await handleMockRequest(cfg);
+      return {
+        data: mockRes.data,
+        status: 200,
+        statusText: 'OK',
+        headers: { 'content-type': 'application/json' },
+        config: cfg,
+        request: {}
+      };
+    };
+  }
+
   return config;
 });
 
 api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    // If running in standalone cloud deployment without live backend, gracefully mock
-    const { url, method } = error.config || {};
-
-    if (error.code === 'ERR_NETWORK' || error.response?.status === 404) {
-      if (url?.includes('/auth/login')) {
-        const data = JSON.parse(error.config.data || '{}');
-        const user = fallbackData.users[data.email] || fallbackData.users['farmer@demo.com'];
-        return Promise.resolve({ data: { user, token: 'demo_token_' + user.role } });
-      }
-
-      if (url?.includes('/auth/me')) {
-        const saved = localStorage.getItem('pashurakshak_user') || localStorage.getItem('pashumitra_user');
-        const user = saved ? JSON.parse(saved) : fallbackData.users['farmer@demo.com'];
-        return Promise.resolve({ data: { user } });
-      }
-
-      if (url?.includes('/hotspots')) {
-        return Promise.resolve({ data: { hotspots: fallbackData.hotspots } });
-      }
-
-      if (url?.includes('/weather')) {
-        return Promise.resolve({
-          data: {
-            weather: {
-              temp: 33,
-              humidity: 62,
-              wind_speed: 12,
-              description: 'clear sky',
-              environmental_notice: 'Weather is shown as environmental context, not a disease diagnosis.'
-            }
-          }
-        });
-      }
-
-      if (url?.includes('/analytics/summary')) {
-        return Promise.resolve({
-          data: {
-            summary: {
-              totalReports: 39,
-              highRiskCount: 10,
-              activeHotspots: 1,
-              visitsScheduled: 5,
-              resolvedCases: 12,
-              totalMortality: 3
-            }
-          }
-        });
-      }
-
-      if (url?.includes('/analytics/districts')) {
-        return Promise.resolve({ data: { districts: fallbackData.districts } });
-      }
-
-      if (url?.includes('/analytics/mortality-stats')) {
-        return Promise.resolve({ data: { officialMortalityData: fallbackData.officialMortalityData } });
-      }
-
-      if (url?.includes('/analytics/trends')) {
-        return Promise.resolve({
-          data: {
-            trends: [
-              { date: '2026-10-02', day: 'Wed', highRisk: 2, mediumRisk: 5, lowRisk: 3 },
-              { date: '2026-10-03', day: 'Thu', highRisk: 3, mediumRisk: 6, lowRisk: 4 },
-              { date: '2026-10-04', day: 'Fri', highRisk: 4, mediumRisk: 7, lowRisk: 4 },
-              { date: '2026-10-05', day: 'Sat', highRisk: 2, mediumRisk: 6, lowRisk: 5 },
-              { date: '2026-10-06', day: 'Sun', highRisk: 5, mediumRisk: 8, lowRisk: 4 },
-              { date: '2026-10-07', day: 'Mon', highRisk: 3, mediumRisk: 6, lowRisk: 5 },
-              { date: '2026-10-08', day: 'Tue', highRisk: 4, mediumRisk: 7, lowRisk: 4 }
-            ]
-          }
-        });
-      }
-
-      if (url?.includes('/reports') && method === 'get') {
-        if (url?.includes('/reports/1') || url?.includes('Case') || url?.includes('/reports/')) {
-          return Promise.resolve({
-            data: {
-              report: fallbackData.case36,
-              visits: [{ id: 1, scheduled_date: 'Tomorrow', scheduled_time: '10:30 AM', status: 'scheduled', notes: 'Urgent mobile clinic dispatched.' }],
-              treatments: []
-            }
-          });
-        }
-        return Promise.resolve({ data: { reports: [fallbackData.case36] } });
-      }
-
-      if (url?.includes('/animals')) {
-        return Promise.resolve({ data: { animals: fallbackData.animals, animal: fallbackData.animals[0], reports: [fallbackData.case36] } });
-      }
-
-      if (url?.includes('/notifications')) {
-        return Promise.resolve({
-          data: {
-            notifications: [
-              { id: 1, title: '🚨 High-Risk Case Alert: COW (Case #0036)', message: 'High-risk case reported at Samrala requiring priority veterinary action.', is_read: false, created_at: new Date() },
-              { id: 2, title: '⚡ Possible Outbreak Hotspot Warning', message: 'Surveillance alert: 28 reports (7 high-risk) in 5 km radius.', is_read: false, created_at: new Date() }
-            ],
-            unreadCount: 2
-          }
-        });
+  async (response) => {
+    // If response returned HTML instead of JSON (e.g. static rewrite returning index.html)
+    if (
+      typeof response.data === 'string' &&
+      (response.data.includes('<!doctype') || response.data.includes('<html'))
+    ) {
+      const mockRes = await handleMockRequest(response.config);
+      return {
+        ...response,
+        data: mockRes.data,
+      };
+    }
+    return response;
+  },
+  async (error) => {
+    // If request failed with 405 (Method Not Allowed on static file), 404, 500, or network error
+    if (
+      error.code === 'ERR_NETWORK' ||
+      !error.response ||
+      [400, 404, 405, 500, 502, 503, 504].includes(error.response?.status)
+    ) {
+      try {
+        const mockRes = await handleMockRequest(error.config || {});
+        return {
+          data: mockRes.data,
+          status: 200,
+          statusText: 'OK',
+          headers: {},
+          config: error.config,
+        };
+      } catch (mockErr) {
+        return Promise.reject(mockErr);
       }
     }
 
